@@ -2,32 +2,57 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-class VerbBox extends React.Component {
+
+
+class Box extends React.Component {
+  state = {
+    answered:false,
+    selected:false,
+  }
+
+  selectState = () => {this.setState({selected:!this.state.selected})}
+
+  onClickSelect = (type) => {
+    let otherType = (type == "sentences" ? "unused" : "sentences");
+    console.log(type)
+    //this.unselectAll(this.props.elementsList[type]);
+  }
+}
+
+class VerbBox extends Box {
+
+  // onClick = (elementsList) => {
+  // // unselectAll(this.props.elementsList.unused);
+  //   let selectedOption = () => {
+  //     this.props.elementsList.sentences.filter((e) => {
+  //       if (e.props.selected) {
+  //         return e;
+  //       }
+  //     })
+  //   }
+    // if (!selectedOption) {
+    //   return
+    // } else {
+    //   if (selectedOption.props.id == this.props.id){
+    //     alert("win");
+    //   }
+    // }
+
+  // }
   render () {
     return (
       <div
         className="verb-bubble gradient"
         draggable
         onDragStart={(e) => this.props.onDragStart(e,this.props.id)}
+        onClick={(e) => this.props.onClick(e,this.props.id,"unused")}
         ><span className="verb-text">{this.props.verb}</span></div>
     )
   }
 }
 
-class Logo extends React.Component {
-  render () {
-    return (
-      <div className="margin-auto"><img
-		alt="United English logo"
-        src="https://static1.squarespace.com/static/500b7040e4b0e4a250259640/t/5b7d93776d2a73f5469015b6/1534956409128/UE+Logo+with+MR+Trans.png"
-        className="logo"></img></div>
-    )
-  }
-}
-class Sentence extends React.Component {
-  state = {
-    answered:false
-  }
+
+class Sentence extends Box {
   answer = () => {this.setState({answered:true})}
   checkAnswer = (e) =>{
     if(this.props.onDrop(e,"complete",this.props.id)) {
@@ -35,7 +60,7 @@ class Sentence extends React.Component {
     }
   }
   durationClass = () => {
-    return "dur" + (8- this.props.id);
+    return "dur" + (8 - this.props.id);
   }
   answeredClass = () => {
     if (!this.state.answered){
@@ -57,6 +82,7 @@ class Sentence extends React.Component {
       <div
         className={this.answeredClass()}
         onDrop={(e)=>this.checkAnswer(e)}
+        onClick={(e) => this.props.onClick(e,this.props.id,"sentences")}
         ><span className="sentence-text">{this.answeredText()}</span></div>
     )
   }
@@ -65,6 +91,10 @@ class Sentence extends React.Component {
 class Game extends React.Component {
 
 state = {
+  clickSelected: {
+    unused: {},
+    sentences: {},
+  },
   counter:0,
   data: [{
     id:0,
@@ -132,6 +162,21 @@ state = {
 ]
   }
 
+  clearSelected = (type) => {
+    let oSelected = this.state.clickSelected[type];
+    for(var i = 0; i < 9; i++) {
+      oSelected[i] = false;
+    }
+    this.setState({...this.state.clickSelected[type], oSelected});
+    return oSelected
+  }
+
+  onClick = (ev, id, type) => {
+    let oSelected = this.clearSelected(type);
+    oSelected[id] = true;
+    this.setState({...this.state.clickSelected[type], oSelected});
+  }
+
   onDragStart = (ev, id) => {
     console.log("dragstart",id);
     ev.dataTransfer.setData("id",id);
@@ -165,14 +210,20 @@ state = {
       options[d.category].push(<VerbBox
         id={d.id}
         verb={d.verb}
+        onClick={this.onClick}
         onDragStart={this.onDragStart}
+        elementsList={options}
+        selected={this.state.clickSelected.unused[d.id]}
       />)
 
       options.sentences.push(<Sentence
         id={d.id}
         body={d.sentence}
         answeredText={d.answer}
+        onClick={this.onClick}
         onDrop={this.onDrop}
+        elementsList={options}
+        selected={this.state.clickSelected.sentences[d.id]}
       />)
 
     });
@@ -197,6 +248,16 @@ state = {
         </div>
       </div>
     );
+  }
+}
+class Logo extends React.Component {
+  render () {
+    return (
+      <div className="margin-auto"><img
+		alt="United English logo"
+        src="https://static1.squarespace.com/static/500b7040e4b0e4a250259640/t/5b7d93776d2a73f5469015b6/1534956409128/UE+Logo+with+MR+Trans.png"
+        className="logo"></img></div>
+    )
   }
 }
 class App extends React.Component {
