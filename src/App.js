@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-
+const checkAnswer = (oClicked) => {
+  const options = oClicked.unused;
+  const answers = oClicked.sentences;
+  if (options.length == 0 || answers.length == 0) return false;
+  const selectedOption = options.filter(o => o == true);
+  const selectedAnswer = answers.filter(o => o == true);
+  const response = false;
+  if(selectedOption == selectedAnswer) alert(true);
+  return response;
+}
 
 class Box extends React.Component {
   state = {
@@ -10,39 +19,24 @@ class Box extends React.Component {
     selected:false,
   }
 
-  selectState = () => {this.setState({selected:!this.state.selected})}
-
-  onClickSelect = (type) => {
-    let otherType = (type == "sentences" ? "unused" : "sentences");
-    console.log(type)
-    //this.unselectAll(this.props.elementsList[type]);
+    selectedClass = () => {
+    if (this.props.selected === true){
+      return " selected";
+    } else {
+      return ""
+    }
   }
+
 }
 
 class VerbBox extends Box {
-
-  // onClick = (elementsList) => {
-  // // unselectAll(this.props.elementsList.unused);
-  //   let selectedOption = () => {
-  //     this.props.elementsList.sentences.filter((e) => {
-  //       if (e.props.selected) {
-  //         return e;
-  //       }
-  //     })
-  //   }
-    // if (!selectedOption) {
-    //   return
-    // } else {
-    //   if (selectedOption.props.id == this.props.id){
-    //     alert("win");
-    //   }
-    // }
-
-  // }
+  classNames = () => {
+    return "gradient verb-bubble" + this.selectedClass();
+  }
   render () {
     return (
       <div
-        className="verb-bubble gradient"
+        className={this.classNames()}
         draggable
         onDragStart={(e) => this.props.onDragStart(e,this.props.id)}
         onClick={(e) => this.props.onClick(e,this.props.id,"unused")}
@@ -60,11 +54,11 @@ class Sentence extends Box {
     }
   }
   durationClass = () => {
-    return "dur" + (8 - this.props.id);
+    return " dur" + (8 - this.props.id);
   }
-  answeredClass = () => {
+  classNames = () => {
     if (!this.state.answered){
-      return "sentence-bubble slideDown  gradient-metal " + this.durationClass();
+      return "sentence-bubble slideDown  gradient-metal " + this.selectedClass() + this.durationClass() ;
     } else {
       return "sentence-bubble  answered"
     }
@@ -80,7 +74,7 @@ class Sentence extends Box {
   render () {
     return (
       <div
-        className={this.answeredClass()}
+        className={this.classNames()}
         onDrop={(e)=>this.checkAnswer(e)}
         onClick={(e) => this.props.onClick(e,this.props.id,"sentences")}
         ><span className="sentence-text">{this.answeredText()}</span></div>
@@ -175,7 +169,10 @@ state = {
     let oSelected = this.clearSelected(type);
     oSelected[id] = true;
     this.setState({...this.state.clickSelected[type], oSelected});
+    checkAnswer(this.state.clickSelected);
   }
+
+
 
   onDragStart = (ev, id) => {
     console.log("dragstart",id);
@@ -235,14 +232,12 @@ state = {
           <div className="unused gradient-black"
             onDragOver={(e)=>this.onDragOver(e)}
             onDrop={(e)=>{this.onDrop(e, "unused")}}>
-            <div className="task-header"><h3>Unused</h3></div>
             <div className="flex">
               {options.unused}
             </div>
           </div>
           <div className="droppable" onDragOver={(e)=>this.onDragOver(e)}
             onDrop={(e)=>this.onDrop(e,"complete")}>
-            <div className="task-header"><h3>Sentences</h3></div>
             {options.sentences}
           </div>
         </div>

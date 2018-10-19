@@ -41,13 +41,23 @@ h3 {
   width:75%;
   padding: 0em;
 }
+.gradient-metal.selected {
+  background: rgb(242,246,248); /* Old browsers */
+  background: -moz-linear-gradient(top,rgb(192, 214, 228) 0%,#e8f7ff 50%,rgb(181, 214, 237) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgb(192, 214, 228) 0%,#e8f7ff 50%,rgb(181, 214, 237) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,rgb(192, 214, 228) 0%,#e8f7ff 50%,rgb(181, 214, 237) 100%) ; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9',GradientType=0 );
+
+  padding-left: 1.2em;
+  border: 1px inset;
+}
 .flex {
     display: flex;
     flex-wrap: wrap;
 }
 .gradient{
   background: -moz-radial-gradient(center, ellipse cover,rgba(255, 255, 255, .4) 0%,rgba(255, 255, 255, 0.7) 100%); /* FF3.6-15 */
-  background: -webkit-radial-gradient(center, ellipse cover,rgba(255, 255, 255, .4) 0%,rgba(255, 255, 255, 0.7) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-radial-gradient(center, ellipse farthest-corner,rgba(255, 255, 255, .1) 0%,rgba(255, 255, 255, 0.8) 100%); /* Chrome10-25,Safari5.1-6 */
   background: radial-gradient(ellipse at center, rgba(255, 255, 255, .4) 0%,rgba(255, 255, 255, 0.7) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
@@ -126,6 +136,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', end
   animation-duration: 5s;
 	-webkit-animation-duration: 5s;
 }
+.selected {
+  //font-weight: bold;
+}
 .task-header {
   background-color: #0c6394;
   display: block;
@@ -147,9 +160,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', end
   padding:0.5em;
   width:max-content;
 }
-.verb-bubble:active{
+.verb-bubble.selected, .verb-bubble:active{
   border: 2px inset white;
+  padding-left: 0.6em;
 }
+
+
 @keyframes slideDown {
 	0% {
 		transform: translateY(-500%);
