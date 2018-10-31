@@ -1,546 +1,606 @@
-import React from 'react';
+import React, { Component } from 'react';
+import logo from './logo.svg';
 import './App.css';
 
-const oWords = shuffle(require("./words.json"));
-const fallDistance = 1;
+const questionData = [
+    [
+        {
+            "id":0,
+            "sentence":"We’re ______________ our attic and giving away all the things we don’t need so come over and see if there’s anything you want.",
+            "answer":"We’re clearing out our attic and giving away all the things we don’t need so come over and see if there’s anything you want.",
+            "verb":"clear out",
+            "category":"unused"
+        },
+        {
+            "id":1,
+            "sentence":"He _________________ anyone who doesn’t have a University education.",
+            "answer":"He looks down on anyone who doesn’t have a University education.",
+            "verb":"look down on",
+            "category":"unused"
+        },
+        {
+            "id":2,
+            "sentence":"She’s not happy that I went out without her, but she’ll _____________ it.",
+            "answer":"She’s not happy that I went out without her, but she’ll get over it.",
+            "verb":"get over",
+            "category":"unused"
+        },
+        {
+            "id":3,
+            "sentence":"When I went home at Christmas I _____________ with my old friends.",
+            "answer":"When I went home at Christmas I caught up with my old friends.",
+            "verb":"catch up with",
+            "category":"unused"
+        },
+        {
+            "id":4,
+            "sentence":"She _____________ lots of dresses before she found one that she liked.",
+            "answer":"She tried on lots of dresses before she found one that she liked.",
+            "verb":"try on",
+            "category":"unused"
+        },
+        {
+            "id":5,
+            "sentence":"It isn't easy to _____________ children nowadays.",
+            "answer":"It isn't easy to bring up children nowadays.",
+            "verb":"bring up",
+            "category":"unused"
+        },
+        {
+            "id":6,
+            "sentence":"My brother borrowed my car. I have a feeling he's not about to _____________ it _____________.",
+            "answer":"My brother borrowed my car. I have a feeling he's not about to give it back.",
+            "verb":"give back",
+            "category":"unused"
+        },
+        {
+            "id":7,
+            "sentence":"The students ________________ their papers and left the room",
+            "answer":"The students handed in their papers and left the room",
+            "verb":"hand in",
+            "category":"unused"
+        },
+        {
+            "id":8,
+            "sentence":"_____________ this application form and mail it in.",
+            "answer":"Fill out this application form and mail it in.",
+            "verb":"fill out",
+            "category":"unused"
+        }
+    ],
 
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+        [
+            {
+                "id": 9,
+                "sentence": "Your radio is driving me crazy! Please turn it down.",
+                "verb": "turn down",
+                "answer": "Your radio is driving me crazy! Please turn it down.",
+                "category": "unused"
+            },
+            {
+                "id": 10,
+                "sentence": "You've misspelled this word again. You'd better look it up.",
+                "verb": "look up",
+                "answer": "You've misspelled this word again. You'd better look it up.",
+                "category": "unused"
+            },
+            {
+                "id": 11,
+                "sentence": "You left out the part about the police chase down Asylum Avenue.",
+                "verb": "leave out",
+                "answer": "You left out the part about the police chase down Asylum Avenue.",
+                "category": "unused"
+            },
+            {
+                "id": 12,
+                "sentence": "We turned off the lights before anyone could see us.",
+                "verb": "turn off",
+                "answer": "We turned off the lights before anyone could see us.",
+                "category": "unused"
+            },
+            {
+                "id": 13,
+                "sentence": "We ___________ __________ money for our retirement. She put away the cereal boxes.",
+                "verb": "put away",
+                "answer": "We put away money for our retirement. She put away the cereal boxes.",
+                "category": "unused"
+            },
+            {
+                "id": 14,
+                "sentence": "We have serious problems here. Let's talk them over like adults.",
+                "verb": "talk over",
+                "answer": "We have serious problems here. Let's talk them over like adults.",
+                "category": "unused"
+            },
+            {
+                "id": 15,
+                "sentence": "We asked the boss to ___________ __________ the meeting until tomorrow. (Please put it off for another day.)",
+                "verb": "put off",
+                "answer": "We asked the boss to put off the meeting until tomorrow. (Please put it off for another day.)",
+                "category": "unused"
+            },
+            {
+                "id": 16,
+                "sentence": "Turn on the CD player so we can dance.",
+                "verb": "turn on",
+                "answer": "Turn on the CD player so we can dance.",
+                "category": "unused"
+            }
+        ],
+        [
+            {
+                "id": 17,
+                "sentence": "Three masked gunmen held up the Security Bank this afternoon.",
+                "verb": "hold up",
+                "answer": "Three masked gunmen held up the Security Bank this afternoon.",
+                "category": "unused"
+            },
+            {
+                "id": 18,
+                "sentence": "They called off this afternoon's meeting",
+                "verb": "call off",
+                "answer": "They called off this afternoon's meeting",
+                "category": "unused"
+            },
+            {
+                "id": 19,
+                "sentence": "These are your instructions. Write them down before you forget.",
+                "verb": "take down",
+                "answer": "These are your instructions. Write them down before you forget.",
+                "category": "unused"
+            },
+            {
+                "id": 20,
+                "sentence": "There were three men in the line-up. She picked out the guy she thought had stolen her purse.",
+                "verb": "pick out",
+                "answer": "There were three men in the line-up. She picked out the guy she thought had stolen her purse.",
+                "category": "unused"
+            },
+            {
+                "id": 21,
+                "sentence": "The terrorists tried to ___________ __________ the railroad station.",
+                "verb": "blow up",
+                "answer": "The terrorists tried to blow up the railroad station.",
+                "category": "unused"
+            },
+            {
+                "id": 22,
+                "sentence": "The students handed in their papers and left the room.",
+                "verb": "hand in",
+                "answer": "The students handed in their papers and left the room.",
+                "category": "unused"
+            },
+            {
+                "id": 23,
+                "sentence": "The lawyers looked over the papers carefully before questioning the witness. (They looked them overcarefully.)",
+                "verb": "look over",
+                "answer": "The lawyers looked over the papers carefully before questioning the witness. (They looked them overcarefully.)",
+                "category": "unused"
+            },
+            {
+                "id": 24,
+                "sentence": "The gang members used up all the money and went out to rob some more banks.",
+                "verb": "use up",
+                "answer": "The gang members used up all the money and went out to rob some more banks.",
+                "category": "unused"
+            }
+        ],
+        [
+            {
+                "id": 25,
+                "sentence": "The firefighters ___________ __________ the house fire before it could spread. (They put it out quickly.)",
+                "verb": "put out",
+                "answer": "The firefighters put out the house fire before it could spread. (They put it out quickly.)",
+                "category": "unused"
+            },
+            {
+                "id": 26,
+                "sentence": "The filling station was giving away free gas.",
+                "verb": "give away",
+                "answer": "The filling station was giving away free gas.",
+                "category": "unused"
+            },
+            {
+                "id": 27,
+                "sentence": "The crane picked up the entire house. (Watch them pick it up.)",
+                "verb": "pick up",
+                "answer": "The crane picked up the entire house. (Watch them pick it up.)",
+                "category": "unused"
+            },
+            {
+                "id": 28,
+                "sentence": "That's a lot of money! Don't just throw it away.",
+                "verb": "throw away",
+                "answer": "That's a lot of money! Don't just throw it away.",
+                "category": "unused"
+            },
+            {
+                "id": 29,
+                "sentence": "She tried on fifteen dresses before she found one she liked.",
+                "verb": "try on",
+                "answer": "She tried on fifteen dresses before she found one she liked.",
+                "category": "unused"
+            },
+            {
+                "id": 30,
+                "sentence": "She knew she was in trouble, so she made up a story about going to the movies with her friends.",
+                "verb": "make up",
+                "answer": "She knew she was in trouble, so she made up a story about going to the movies with her friends.",
+                "category": "unused"
+            },
+            {
+                "id": 31,
+                "sentence": "She hung up the phone before she hung up her clothes.",
+                "verb": "hang up",
+                "answer": "She hung up the phone before she hung up her clothes.",
+                "category": "unused"
+            },
+            {
+                "id": 32,
+                "sentence": "She filled up the grocery cart with free food.",
+                "verb": "fill up",
+                "answer": "She filled up the grocery cart with free food.",
+                "category": "unused"
+            }
+        ],
+        [
+            {
+                "id": 33,
+                "sentence": "My wife ___________ __________ the living room exactly the way she wanted it. She set it up.",
+                "verb": "set up",
+                "answer": "My wife set up the living room exactly the way she wanted it. She set it up.",
+                "category": "unused"
+            },
+            {
+                "id": 34,
+                "sentence": "My sister found out that her husband had been planning a surprise party for her.",
+                "verb": "find out",
+                "answer": "My sister found out that her husband had been planning a surprise party for her.",
+                "category": "unused"
+            },
+            {
+                "id": 35,
+                "sentence": "My mother brought up that little matter of my prison record again.",
+                "verb": "bring up",
+                "answer": "My mother brought up that little matter of my prison record again.",
+                "category": "unused"
+            },
+            {
+                "id": 36,
+                "sentence": "My brother borrowed my car. I have a feeling he's not about to give it back.",
+                "verb": "give back",
+                "answer": "My brother borrowed my car. I have a feeling he's not about to give it back.",
+                "category": "unused"
+            },
+            {
+                "id": 37,
+                "sentence": "It was so hot that I had to ___________ __________ my shirt.",
+                "verb": "take off",
+                "answer": "It was so hot that I had to take off my shirt.",
+                "category": "unused"
+            },
+            {
+                "id": 38,
+                "sentence": "It was a disgusting movie. It really turned me off.",
+                "verb": "turn off (2)",
+                "answer": "It was a disgusting movie. It really turned me off.",
+                "category": "unused"
+            },
+            {
+                "id": 39,
+                "sentence": "It isn't easy to ___________ __________ children nowadays.",
+                "verb": "bring up",
+                "answer": "It isn't easy to bring up children nowadays.",
+                "category": "unused"
+            },
+            {
+                "id": 40,
+                "sentence": "I tried out four cars before I could find one that pleased me.",
+                "verb": "try out",
+                "answer": "I tried out four cars before I could find one that pleased me.",
+                "category": "unused"
+            }
+        ],
+        [
+            {
+                "id": 41,
+                "sentence": "I ___________ __________ the homework, but couldn't make any sense of it.",
+                "verb": "read over",
+                "answer": "I read over the homework, but couldn't make any sense of it.",
+                "category": "unused"
+            },
+            {
+                "id": 42,
+                "sentence": "I ___________ __________ a sweater and a jacket. (I put them on quickly.)",
+                "verb": "put on",
+                "answer": "I put on a sweater and a jacket. (I put them on quickly.)",
+                "category": "unused"
+            },
+            {
+                "id": 43,
+                "sentence": "I hate to ___________ __________ the meeting, but I have to go to the bathroom.",
+                "verb": "hold up",
+                "answer": "I hate to hold up the meeting, but I have to go to the bathroom.",
+                "category": "unused"
+            },
+            {
+                "id": 44,
+                "sentence": "He was so far away, we really couldn't ___________ __________ what he was saying.",
+                "verb": "make out",
+                "answer": "He was so far away, we really couldn't make out what he was saying.",
+                "category": "unused"
+            },
+            {
+                "id": 45,
+                "sentence": "He applied for a promotion twice this year, but he was turned down both times.",
+                "verb": "turn down (2)",
+                "answer": "He applied for a promotion twice this year, but he was turned down both times.",
+                "category": "unused"
+            },
+            {
+                "id": 46,
+                "sentence": "Grandpa couldn't hear, so he turned up his hearing aid.",
+                "verb": "turn up",
+                "answer": "Grandpa couldn't hear, so he turned up his hearing aid.",
+                "category": "unused"
+            },
+            {
+                "id": 47,
+                "sentence": "Fill out this application form and mail it in.",
+                "verb": "fill out",
+                "answer": "Fill out this application form and mail it in.",
+                "category": "unused"
+            },
+            {
+                "id": 48,
+                "sentence": "Do this homework over.",
+                "verb": "do over",
+                "answer": "Do this homework over.",
+                "category": "unused"
+            }
+        ]
+    ]
 
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+const getSelected = (obj) => {
+    for (let key in Object.keys(obj)){
+        if(obj[key] === true){
+            return key; //HERE IS THE PROBLEM
+        }
     }
-
-    return array;
 }
 
+const checkAnswer = (oClicked) => {
+    const options = oClicked.unused;
+    const answers = oClicked.sentences;
+    console.log("------------Check answer------------------");
+    console.log("------------Options------------------");
+    console.log(options);
+    console.log("------------answers------------------");
+    console.log(answers);
+    if (Object.keys(options).length === 0 || Object.keys(answers).length === 0) return "continue";
+    const selectedOption = getSelected(options);
+    const selectedAnswer = getSelected(answers);
+    const response = false;
+    if (selectedAnswer === null || selectedOption === null) return "continue";
+    if (selectedAnswer === selectedOption) return true;
+    return response;
 
-class Block extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            id:props.id,
-            word:props.word.word,
-            top:props.top,
-            category:props.word.category,
-            answeredWrong:props.answeredWrong,
-            answeredCorrectly:props.answeredCorrectly,
-        }
-    }
-
-    componentWillReceiveProps(nextProps){
-        if(this.props !== nextProps) {
-            this.setState({
-                top:nextProps.top,
-                selected:nextProps.selected,
-                left:nextProps.left,
-                right:nextProps.right,
-                answeredWrong:nextProps.answeredWrong,
-                answeredCorrectly:nextProps.answeredCorrectly,
-            })
-        }
-
-    }
-
-    createClassList = () => {
-        let classes = "Block ";
-        if (this.state.answeredWrong){
-            classes += "wrong ";
-        }
-        if (this.state.answeredCorrectly){
-            let direction = (this.state.category == "countable" ? "right" : "left");
-            classes += "answered-correctly-" + direction;
-        }
-        return classes;
-    }
-
-
-
-    top = () => {return ((this.state.top - 10) * 5).toString() + "%";}
-
-    render() {
-        return (
-            <div className={this.createClassList()} style={{
-                top:this.top(),
-                left:this.state.left,
-                right:this.state.right,
-            }}>
-                {this.state.word}
-            </div>
-        );
-    }
 }
 
-class Social extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            title:encodeURI("Practice phrasal verbs with this game!"),
-            url:encodeURI("https://www.unitedenglish.com.mx/united-english-blog/2018/10/17/phrasal-verbs-game"),
-            summary:encodeURI(`I scored ${props.points}! Can you beat me?`),
+class Box extends React.Component {
+    state = {
+        answered:false,
+    }
+
+    selectedClass = () => {
+        if (this.props.selected === true){
+            return " selected";
+        } else {
+            return ""
         }
     }
-    createFBLink = () => {
-        return `http://www.facebook.com/sharer.php?s=100&p[url]=${this.state.url}`
-    };
-    createTwitterLink = () => {
-        return `http://twitter.com/intent/tweet?text=${this.state.summary}+${this.state.url}`
-    };
 
+}
+
+class VerbBox extends Box {
+    classNames = () => {
+        return "gradient verb-bubble" + this.selectedClass();
+    }
     render () {
         return (
-            <div className="header-20 social">
-                <div>Share this game!</div>
-                <div className="soc-med-icons">
-                    <a title="send to Facebook"
-                       href={this.createFBLink()}
-                       rel="noopener noreferrer"
-                       target="_blank">
-                        <img className="soc-icon" src="https://image.flaticon.com/icons/svg/145/145812.svg" />
-                    </a>
-                    <a title="send to Twitter"
-                       href={this.createTwitterLink()}
-                       rel="noopener noreferrer"
-                       target="_blank">
-                        <img className="soc-icon" src="https://image.flaticon.com/icons/svg/124/124010.svg" />
-
-                    </a>
-                </div>
-            </div>
-        );
-    }
-
-}
-
-class Stats extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            answeredCorrectly:props.answeredCorrectly,
-            answeredWrong:props.answeredWrong,
-        }
-    }
-    componentWillReceiveProps(nextProps){
-        if(this.props !== nextProps) {
-            this.setState({
-                answeredWrong:nextProps.answeredWrong,
-                answeredCorrectly:nextProps.answeredCorrectly,
-            })
-        }
-
-    }
-
-    render() {
-        return (
-            <div className="stats">
-
-                <div className="half-width">
-                    <span className="stats-text">Answered correctly:</span>
-                    <span className="stats-text">Answered wrong:</span>
-                    <span className="stats-text">Level:</span>
-                </div>
-                <div className="half-width">
-                    <span className="stats-text digit">{this.state.answeredCorrectly}</span>
-                    <span className="stats-text digit">{this.state.answeredWrong}</span>
-                    <span className="stats-text digit">{this.state.answeredCorrectly}</span>
-                </div>
-            </div>
+            <div
+                className={this.classNames()}
+                draggable
+                onDragStart={(e) => this.props.onDragStart(e,this.props.id)}
+                onClick={(e) => this.props.onClick(e,this.props.id,"unused")}
+            ><span className="verb-text">{this.props.verb}</span></div>
         )
     }
 }
 
-class Screen extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            timer: 0,
-            fallenBlocks:this.props.fallenBlocks,
-            fallingBlock:this.props.fallingBlock,
-            words: this.props.words,
-        }
+class Sentence extends Box {
 
-    }
+    answer = () => {this.setState({answered:true})}
+
     componentWillReceiveProps(nextProps){
-        if (nextProps!==this.props){
-            this.setState({
-                blocks:nextProps.blocks,
-                fallingBlock:nextProps.fallingBlock,
-                answeredBlocks:nextProps.answeredBlocks,
-                fallenBlocks:nextProps.fallenBlocks,
-            })
+        this.setState({answered:nextProps.answered })
+    }
+
+    checkAnswer = (e) =>{
+        if(this.props.onDrop(e,"complete",this.props.id)) {
+            this.answer();
         }
     }
-    answeredCorrectly = () => {
-        if(!this.state.answeredBlocks){
-            return 0;
-        }
-        return this.state.answeredBlocks.length;
+    durationClass = () => {
+        return " dur" + (8 - this.props.id);
     }
-
-    createFallenBlocks = () => {
-        const fallenBlocks = this.props.fallenBlocks;
-        let resultsArray = [];
-        fallenBlocks.forEach((b) => {
-            const blockElement = (<Block
-                    key={b.key}
-                    top={b.top}
-                    word={b.word}
-                    selected={b.selected}
-                    id={b.key}
-                    left={b.left}
-                    answeredWrong={b.answeredWrong}
-                />
-            );
-            resultsArray.push(blockElement);
-        });
-        return resultsArray;
-
-    }
-    createFallingBlock = () => {
-        const fallingBlock = this.state.fallingBlock;
-
-        const blockElement = (<Block
-                key={fallingBlock.key}
-                top={fallingBlock.top}
-                word={this.state.words[fallingBlock.key]}
-                selected={fallingBlock.selected}
-                id={fallingBlock.key}
-                left={fallingBlock.left}
-                right={fallingBlock.right}
-                answeredWrong={fallingBlock.answeredWrong}
-                answeredCorrectly={fallingBlock.answeredCorrectly}
-            />
-        );
-        return blockElement;
-    }
-
-    render() {
-        return (
-            <div className="Screen">
-                <div className="block-screen">
-                    {this.createFallenBlocks()}
-                    {this.createFallingBlock()}
-                </div>
-                <Stats
-                    answeredWrong={this.state.fallenBlocks.length}
-                    answeredCorrectly={this.answeredCorrectly()}
-                    level={Math.floor(this.state.fallingBlock.id / 10) + 1}
-                />
-            </div>
-        );
-    }
-}
-
-class Button extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            side:props.side,
-            category:props.category,
+    classNames = () => {
+        if (!this.state.answered){
+            return "sentence-bubble slideDown  gradient-metal " + this.selectedClass() + this.durationClass() ;
+        } else {
+            return "sentence-bubble  answered"
         }
     }
-    createClassList = () => {
-        return `Button ${this.state.side}`
-    }
-    onClick = () => {
-        this.props.choose(this.state.category);
+    answeredText = () => {
+        if (!this.state.answered){
+            return this.props.body;
+        } else {
+            return this.props.answeredText;
+        }
     }
 
-    render() {
+    render () {
         return (
-            <div className= {"btn-holder " + this.state.side} >
-                <div className={this.createClassList()}>
-                    <div className="btn-inner" onClick={this.onClick}></div>
-                </div>
-                <span className="btn-tag">{this.state.category}</span>
-            </div>
-        );
-    }
-}
-
-class FunctionButton extends React.Component {
-}
-
-class PauseButton extends FunctionButton {
-    onClick = () => {
-        this.props.stopTimer();
-    }
-    render() {
-        return (
-            <div className={"btn-holder function-button pause"}>
-                <div className={"function-button pause"} onClick={this.onClick}>
-                </div>
-                <span className="btn-tag func">Pause</span>
-            </div>
-        );
-    }
-}
-class StartButton extends FunctionButton{
-    onClick = () => {
-        this.props.startTimer();
-    }
-    render() {
-        return (
-            <div className={"btn-holder function-button start"}>
-                <div className={"function-button start"} onClick={this.onClick}>
-                </div>
-                <span className="btn-tag func">Start</span>
-            </div>
-        );
-    }
-}
-class ResetButton extends FunctionButton{
-    onClick = () => {
-        this.props.reset();
-    }
-    render() {
-        return (
-            <div className={"btn-holder function-button reset"}>
-                <div className={"function-button reset"} onClick={this.onClick}>
-                </div>
-                <span className="btn-tag func">Reset</span>
-            </div>
-        );
-    }
-}
-class GameOver extends React.Component {
-    constructor(props){
-        super(props);
-    }
-    render() {
-        return (
-            <div className={"game-over"}>
-                <h2>Well Done!</h2>
-                <h2>You scored {this.props.score}!</h2>
-                <Social/>
-                <span onClick={this.props.reset}> Click here to play again</span>
-            </div>
+            <div
+                className={this.classNames()}
+                onDrop={(e)=>this.checkAnswer(e)}
+                onClick={(e) => this.props.onClick(e,this.props.id,"sentences")}
+            ><span className="sentence-text">{this.answeredText()}</span></div>
         )
     }
 }
 
 class Game extends React.Component {
-    constructor(props){
-        super(props);
-        this.state ={
-            answered:false,
-            words:oWords,
-            answeredBlocks:[],
-            fallingBlock:
-                {
-                    key:0,
-                    left:0,
-                    right:0,
-                    top:10,
-                    selected:false,
-                    word:oWords[0],
-                    answeredWrong:false,
-                    answeredCorrectly:false,
-                },
-            fallenBlocks:[],
-            bottom:27,
-            timer:true,
-            speed:300,
-            gameOver:false,
-        };
-        this.startTimer = this.startTimer.bind(this);
-/*        this.startTimer();*/
-    }
-    componentDidMount() {
-        document.addEventListener('keydown', this.onKeyDown);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.onKeyDown);
-    }
-
-    onKeyDown = (e) => {
-        if(e.key === "ArrowRight"){
-            this.choose("uncountable");
-        } else if (e.key === "ArrowLeft") {
-            this.choose("countable");
+    constructor(){
+        super();
+        this.state = {
+            data: questionData,
+            clickSelected: {
+                unused: {},
+                sentences: {},
+            },
+            counter:0,
+            level:1,
         }
     }
 
+    clearSelected = (type) => {
+        let oSelected = this.state.clickSelected[type];
+        for(let k in this.state.data[this.state.level]) {
+            let id = this.state.data[this.state.level][k].id;
+            oSelected[id] = false;
+        }
+        this.setState({...this.state.clickSelected[type], oSelected});
+        return oSelected
+    }
 
-    choose = (cat) => {
-        let currentBlock = this.state.fallingBlock;
-        if (currentBlock.answeredWrong || this.timer === false) return;
-        console.log(cat);
-        if (currentBlock.word.category === cat) {
-            this.stopTimer();
-            currentBlock.answeredCorrectly = true;
-            this.setState({
-                fallingBlock:currentBlock,
+    onClick = (ev, id, type) => {
+        console.log(this.state.clickSelected[type]);
+        console.log("---------Clicked---------------");
+        console.log(`id:${id}, type${type}`);
+        let oSelected = this.clearSelected(type);
+        oSelected[id] = true;
+        console.log(`oSelected:`);
+        console.log(oSelected);
+        console.log(this.state.clickSelected[type]);
+        this.setState({...this.state.clickSelected[type], oSelected});
+        let matched = checkAnswer(this.state.clickSelected);
+        if (matched === "continue") return;
+         if (matched){
+             let options = this.state.data[this.state.level].filter((d) => {
+                 if (d.id==id){
+                     d.category = "complete";
+                 }
+                 return d;
+             });
+             this.setState({...this.state, options });
+             this.clearSelected(type);
+         } else {
+         }
+    }
+
+
+
+    onDragStart = (ev, id) => {
+        console.log("dragstart",id);
+        ev.dataTransfer.setData("id",id);
+    }
+    onDragOver = (ev) => {
+        ev.preventDefault();
+    }
+    onDrop = (ev,cat,answerElementId) => {
+        let id = ev.dataTransfer.getData("id");
+        if (id == answerElementId){
+            let options = this.state.data.filter((d) => {
+                if (d.id==id){
+                    d.category = cat;
+                }
+                return d;
             });
-            setTimeout(()=>{
-                currentBlock.selected = true;
-                this.setState({
-                    fallingBlock:currentBlock,
-                    answered:true,
-                });
-                this.startTimer();
-            },300)
-
-
-        } else {
-            currentBlock.answeredWrong = true;
-            this.setState({
-                fallingBlock:currentBlock,
-            });
+            this.setState({...this.state, options });
+            return true;
         }
-    };
 
-    dropBlock = (block) => {
-        block.top += fallDistance;
-        return block;
-    };
+    }
 
-    lose = () => {
-        this.stopTimer();
-        this.setState({gameOver:true});
-    };
-
-    setBlocks = () => {
-
-        let fallingBlock = this.state.fallingBlock;
-        if((fallingBlock.key + 1) > oWords.length){
-            this.lose();
+    render () {
+        let options = {
+            unused:[],
+            complete:[],
+            sentences:[],
         }
-        const newBlock = {
-            key:fallingBlock.key + 1,
-            top:10 - Math.floor(-(this.state.bottom - 25)/1.5),
-            selected:false,
-            word:oWords[fallingBlock.key + 1],
-            right:0,
-            left:0,
-        };
-        const bottom = this.state.bottom;
-        if (fallingBlock.top > bottom){
-            let nextBottom;
+        console.log("Render function - clickSelected:");
+        console.log(this.state.clickSelected);
+        console.log(this.state.clickSelected);
+        this.state.data[this.state.level].forEach ((d) => {
+            options[d.category].push(<VerbBox
+                answered={this.state.clickSelected.unused[d.id]}
+                id={d.id}
+                verb={d.verb}
+                onClick={this.onClick}
+                onDragStart={this.onDragStart}
+                selected={this.state.clickSelected.unused[d.id]}
+            />)
 
-            if(this.state.fallenBlocks.length % 3 === 2 && this.state.fallenBlocks.length > 0){
-                nextBottom = this.state.bottom - 3  ;
-            } else {
-                nextBottom = this.state.bottom;
-            }
+            options.sentences.push(<Sentence
+                id={d.id}
+                body={d.sentence}
+                answered={d.category === "complete"}
+                answeredText={d.answer}
+                onClick={this.onClick}
+                onDrop={this.onDrop}
+                selected={this.state.clickSelected.sentences[d.id]}
+            />)
 
-            let fallenBlocks = this.state.fallenBlocks;
-            fallenBlocks.push(fallingBlock);
-            const newSpeed = this.speed - 10;
-            this.setState({
-                fallingBlock:newBlock,
-                fallenBlocks:fallenBlocks,
-                bottom:nextBottom,
-                speed:this.state.speed,
-            });
-
-            if (this.state.bottom < 1) {
-                this.lose();
-            }
-        }
-        if(this.state.answered){
-            let answeredBlocks = this.state.answeredBlocks;
-            answeredBlocks.push(fallingBlock);
-            setTimeout(() => {
-                this.setState({
-                    fallingBlock:newBlock,
-                    answeredBlocks:answeredBlocks,
-                    answered:false,
-                });
-            },100);
-
-
-
-        } else {
-
-        }
-        fallingBlock = this.state.fallingBlock;
-        fallingBlock = this.dropBlock(fallingBlock);
-        this.setState({fallingBlock:fallingBlock});
-
-    };
-
-    reset = () => {
-        this.setState({
-            answered:false,
-            words:oWords,
-            answeredBlocks:[],
-            fallingBlock:
-                {
-                    key:0,
-                    left:0,
-                    right:0,
-                    top:10,
-                    selected:false,
-                    word:oWords[0],
-                    answeredWrong:false,
-                    answeredCorrectly:false,
-                },
-            fallenBlocks:[],
-            bottom:27,
-            timer:true,
-            speed:300,
-            gameOver:false,
         });
-    };
-    showGameOver = () => {
-        if (this.state.gameOver){
-            return <GameOver score={this.state.answeredBlocks.length} reset={this.reset}/>;
-        }
-    };
 
-    startTimer = () => {
-        this.setState({timer:true});
-        this.timer = setInterval(this.setBlocks, this.state.speed);
-    };
-    stopTimer = () => {
-        this.setState({timer:false});
-        clearInterval(this.timer);
-    };
-
-    render() {
         return (
-            <div className="Game">
-                <header className="App-header">
-                    Countable/Uncountable
-                </header>
-                {this.showGameOver()}
-                <Screen
-                    answeredBlocks={this.state.answeredBlocks}
-                    fallenBlocks={this.state.fallenBlocks}
-                    fallingBlock={this.state.fallingBlock}
-                    words={this.state.words}
-                    setBlocks={this.setBlocks}
-                />
-                <Button side="left" category="countable" choose={this.choose}  />
-
-                <PauseButton stopTimer={this.stopTimer}/>
-                <ResetButton reset={this.reset}/>
-                <StartButton startTimer={this.startTimer}/>
-                <Button side="right" category="uncountable" choose={this.choose} />
-                <Social />
+            <div className="container-drag">
+                <div className="header-div flex"><h2 className="header">Phrasal Verb Game</h2><Logo /></div>
+                <div className="container">
+                    <div className="unused gradient-black"
+                         onDragOver={(e)=>this.onDragOver(e)}
+                         onDrop={(e)=>{this.onDrop(e, "unused")}}>
+                        <div className="flex">
+                            {options.unused}
+                        </div>
+                    </div>
+                    <div className="droppable" onDragOver={(e)=>this.onDragOver(e)}
+                         onDrop={(e)=>this.onDrop(e,"complete")}>
+                        {options.sentences}
+                    </div>
+                </div>
             </div>
         );
     }
 }
-
+class Logo extends React.Component {
+    render () {
+        return (
+            <div className="margin-auto"><img
+                alt="United English logo"
+                src="https://static1.squarespace.com/static/500b7040e4b0e4a250259640/t/5b7d93776d2a73f5469015b6/1534956409128/UE+Logo+with+MR+Trans.png"
+                className="logo"></img></div>
+        )
+    }
+}
 class App extends React.Component {
     render() {
         return (
             <div className="App">
-
                 <Game />
             </div>
+
         );
     }
 }
